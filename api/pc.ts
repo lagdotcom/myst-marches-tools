@@ -3,7 +3,7 @@ import { createClient } from "redis";
 const notNull = (s: string | null): s is string => typeof s === "string";
 
 export const GET = async () => {
-  const redis = await createClient().connect();
+  const redis = await createClient({ url: process.env.REDIS_URL }).connect();
 
   const keys = await redis.keys("pc:*");
   const results = keys.length ? await redis.mGet(keys) : [];
@@ -22,7 +22,7 @@ export const POST = async (request: Request) => {
 
   const key = `pc:${data.name}`;
 
-  const redis = await createClient().connect();
+  const redis = await createClient({ url: process.env.REDIS_URL }).connect();
 
   if ((await redis.exists(key)) > 0)
     return new Response(JSON.stringify({ error: "already exists" }), {
@@ -39,7 +39,7 @@ export const PUT = async (request: Request) => {
 
   const key = `pc:${data.name}`;
 
-  const redis = await createClient().connect();
+  const redis = await createClient({ url: process.env.REDIS_URL }).connect();
 
   if ((await redis.exists(key)) === 0)
     return new Response(JSON.stringify({ error: "does not exist" }), {
