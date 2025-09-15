@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/react";
+
 import "./App.scss";
 import type { ClassLevel, PC } from "./types";
 import { useAddPC, useEditPC, usePCList } from "./api";
@@ -97,6 +99,8 @@ function App() {
         height: "100vh",
       }}
     >
+      <Analytics />
+
       <div style={{ overflowY: "scroll" }}>
         <Table
           aria-label="PCs"
