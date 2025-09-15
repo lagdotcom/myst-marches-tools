@@ -14,7 +14,12 @@ export const useSortedThing = <T>(
   const items = useMemo(
     () =>
       data.sort((a, b) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         const first = a[sortDescriptor.column];
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         const second = b[sortDescriptor.column];
 
         let cmp = 0;
