@@ -10,7 +10,7 @@ export function MyColumn(
           {props.children}
           {allowsSorting && (
             <span aria-hidden="true" className="sort-indicator">
-              {sortDirection === "ascending" ? "⬆️" : "⬇️"}
+              {sortDirection === "ascending" ? "⬇️" : "⬆️"}
             </span>
           )}
         </div>
