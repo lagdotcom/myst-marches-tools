@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
 import type { Key, SortDescriptor, SortDirection } from "react-stately";
 
-export const useSortedThing = <T>(
+export default function useSortedList<T>(
   data: T[],
   initialColumn: Key,
   initialDirection: SortDirection = "ascending"
-) => {
+) {
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: initialColumn,
     direction: initialDirection,
@@ -33,4 +33,4 @@ export const useSortedThing = <T>(
   );
 
   return { items, onSortChange: setSortDescriptor, sortDescriptor };
-};
+}

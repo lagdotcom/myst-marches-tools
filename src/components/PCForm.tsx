@@ -1,19 +1,20 @@
+import { type FormEvent, useCallback, useMemo, useState } from "react";
 import {
   Button,
   ComboBox,
   FieldError,
   Form,
   Input,
+  type Key,
   Label,
   ListBox,
   ListBoxItem,
   Popover,
   TextField,
-  type Key,
 } from "react-aria-components";
-import type { PC } from "./types";
-import { useCallback, useMemo, useState, type FormEvent } from "react";
-import { classNames } from "./data";
+
+import { classNames } from "../data";
+import type { PC } from "../types";
 
 interface Props {
   disabled?: boolean;
@@ -56,7 +57,6 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
       <TextField
         isDisabled={disabled}
         isRequired
-        isReadOnly={editing}
         value={player}
         onChange={setPlayer}
       >

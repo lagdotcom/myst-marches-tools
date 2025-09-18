@@ -1,0 +1,14 @@
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+nav {
+  padding: 5px;
+  border-bottom: 2px solid black;
+}
+
+article {
+  overflow-y: scroll;
+}

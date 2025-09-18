@@ -1,6 +1,7 @@
-import useSWR from "swr";
-import type { PC } from "./types";
 import { useCallback, useState } from "react";
+import useSWR from "swr";
+
+import type { PC } from "./types";
 
 const apiRoot = "/api";
 const pcRoot = apiRoot + "/pc";
