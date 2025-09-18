@@ -1,6 +1,7 @@
 export interface PC {
   name: string;
   player: string;
+  species: string;
   classLevels: ClassLevel[];
 }
 

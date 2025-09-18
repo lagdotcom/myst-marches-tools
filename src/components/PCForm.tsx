@@ -1,20 +1,17 @@
 import { type FormEvent, useCallback, useMemo, useState } from "react";
 import {
   Button,
-  ComboBox,
   FieldError,
   Form,
   Input,
-  type Key,
   Label,
-  ListBox,
-  ListBoxItem,
-  Popover,
   TextField,
 } from "react-aria-components";
+import cx from "classnames";
 
-import { classNames } from "../data";
+import { classNames, speciesNames } from "../data";
 import type { PC } from "../types";
+import MyComboBox from "./MyComboBox";
 
 interface Props {
   disabled?: boolean;
@@ -23,17 +20,14 @@ interface Props {
 }
 
 const classNameOptions = classNames.map((name) => ({ id: name, name }));
-type ClassNameOption = (typeof classNameOptions)[number];
+const speciesNameOptions = speciesNames.map((name) => ({ id: name, name }));
 
 export default function PCForm({ disabled, edit, onSubmit }: Props) {
   const editing = useMemo(() => !!edit, [edit]);
   const [player, setPlayer] = useState(edit?.player ?? "");
   const [name, setName] = useState(edit?.name ?? "");
+  const [species, setSpecies] = useState(edit?.species ?? "");
   const [className, setClassName] = useState(edit?.classLevels[0].name ?? "");
-
-  const onClassChange = useCallback((key: Key | null) => {
-    setClassName(key ? (key as string) : "");
-  }, []);
 
   const reset = useCallback(() => {
     setPlayer("");
@@ -45,15 +39,15 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
     (e: FormEvent) => {
       e.preventDefault();
       onSubmit(
-        { player, name, classLevels: [{ name: className, level: 1 }] },
+        { player, name, species, classLevels: [{ name: className, level: 1 }] },
         reset
       );
     },
-    [className, name, onSubmit, player, reset]
+    [className, name, onSubmit, player, reset, species]
   );
 
   return (
-    <Form onSubmit={onFormSubmit}>
+    <Form className={cx({ disabled })} onSubmit={onFormSubmit}>
       <TextField
         isDisabled={disabled}
         isRequired
@@ -75,24 +69,20 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
         <Input />
         <FieldError />
       </TextField>
-      <ComboBox
-        isDisabled={disabled}
-        defaultItems={classNameOptions}
-        selectedKey={className}
-        onSelectionChange={onClassChange}
-      >
-        <Label>Class</Label>
-        <div>
-          <Input />
-          <Button>🔽</Button>
-        </div>
-        <FieldError />
-        <Popover>
-          <ListBox<ClassNameOption>>
-            {(item) => <ListBoxItem>{item.name}</ListBoxItem>}
-          </ListBox>
-        </Popover>
-      </ComboBox>
+      <MyComboBox
+        label="Species"
+        disabled={disabled}
+        items={speciesNameOptions}
+        selected={species}
+        onChange={setSpecies}
+      />
+      <MyComboBox
+        label="Class"
+        disabled={disabled}
+        items={classNameOptions}
+        selected={className}
+        onChange={setClassName}
+      />
 
       <Button isDisabled={disabled} type="submit">
         Submit

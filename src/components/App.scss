@@ -12,3 +12,15 @@ nav {
 article {
   overflow-y: scroll;
 }
+
+form {
+  &.disabled {
+    background-color: var(--gray-100);
+    cursor: progress;
+
+    input,
+    select {
+      pointer-events: none;
+    }
+  }
+}

@@ -96,6 +96,9 @@ function App() {
             <MyColumn id="name" allowsSorting isRowHeader>
               Name
             </MyColumn>
+            <MyColumn id="species" allowsSorting>
+              Species
+            </MyColumn>
             <MyColumn>Class</MyColumn>
             <MyColumn>Actions</MyColumn>
           </TableHeader>
@@ -104,6 +107,7 @@ function App() {
               <Row key={index}>
                 <Cell>{pc.player}</Cell>
                 <Cell>{pc.name}</Cell>
+                <Cell>{pc.species}</Cell>
                 <Cell>{classLevels(pc.classLevels)}</Cell>
                 <Cell>
                   <Button onClick={() => onEdit(pc)}>✏️</Button>
