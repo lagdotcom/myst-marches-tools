@@ -63,7 +63,6 @@ function App() {
         <Dialog>
           <Heading slot="title">Add PC</Heading>
           <PCForm disabled={addPC.isSubmitting} onSubmit={onSubmitAdd} />
-          <Button slot="close">Close</Button>
         </Dialog>
       </Modal>
 
@@ -75,7 +74,6 @@ function App() {
             edit={editingPC}
             onSubmit={onSubmitEdit}
           />
-          <Button slot="close">Close</Button>
         </Dialog>
       </Modal>
     </main>
