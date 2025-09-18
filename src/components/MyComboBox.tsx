@@ -48,10 +48,10 @@ export default function MyComboBox<TItem extends ComboBoxItem>({
       <Label>{label}</Label>
       <div>
         <Input />
-        <Button>🔽</Button>
+        <Button>⯆</Button>
       </div>
       <FieldError />
-      <Popover>
+      <Popover maxHeight={400}>
         <ListBox<TItem>>
           {(item) => <ListBoxItem>{item.name}</ListBoxItem>}
         </ListBox>

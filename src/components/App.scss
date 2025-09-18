@@ -24,3 +24,15 @@ form {
     }
   }
 }
+
+.react-aria-Table {
+  width: 100%;
+
+  &.error {
+    background-color: var(--red-100);
+  }
+
+  &.isLoading {
+    cursor: progress;
+  }
+}
