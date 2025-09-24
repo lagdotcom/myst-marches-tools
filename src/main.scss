@@ -114,6 +114,11 @@ input {
     outline: 2px solid var(--focus-ring-color);
     outline-offset: -1px;
   }
+
+  &[data-disabled] {
+    border-color: var(--border-color-disabled);
+    color: var(--text-color-disabled);
+  }
 }
 
 .react-aria-Dialog {
@@ -157,7 +162,7 @@ input {
   color: var(--text-color);
   border: 1px solid var(--gray-400);
   outline: none;
-  max-width: 300px;
+  max-width: 600px;
 
   &[data-entering] {
     animation: modal-zoom 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -456,6 +461,7 @@ input {
 
     &[readonly] {
       background-color: var(--gray-100);
+      cursor: not-allowed;
     }
   }
 }
@@ -578,5 +584,57 @@ input {
     .react-aria-OverlayArrow svg {
       transform: rotate(-90deg);
     }
+  }
+}
+
+.react-aria-NumberField {
+  margin-bottom: 8px;
+  color: var(--text-color);
+
+  .react-aria-Group {
+    display: flex;
+    width: fit-content;
+    border-radius: 4px;
+
+    &[data-focus-within] {
+      outline: 1px solid var(--focus-ring-color);
+      .react-aria-Input,
+      .react-aria-Button {
+        border-color: var(--focus-ring-color);
+      }
+    }
+  }
+
+  .react-aria-Button {
+    font-size: 1.4rem;
+    width: 2.3rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &[slot="decrement"] {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+
+    &[slot="increment"] {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+    }
+  }
+
+  .react-aria-Input {
+    background: var(--field-background);
+    border: 1px solid var(--border-color);
+    border-radius: 0;
+    color: var(--field-text-color);
+    margin: 0 -1px;
+    z-index: 1;
+    font-size: 1rem;
+    padding: 0.286rem;
+    outline: none;
+    width: 6rem;
+    flex: 1;
   }
 }

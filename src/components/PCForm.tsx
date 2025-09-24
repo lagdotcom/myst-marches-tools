@@ -1,3 +1,4 @@
+import cx from "classnames";
 import { type FormEvent, useCallback, useMemo, useState } from "react";
 import {
   Button,
@@ -7,11 +8,11 @@ import {
   Label,
   TextField,
 } from "react-aria-components";
-import cx from "classnames";
 
-import { classNames, speciesNames } from "../data";
+import { speciesNames } from "../data";
 import type { PC } from "../types";
 import MyComboBox from "./MyComboBox";
+import PCClassLevels from "./PCClassLevels";
 
 interface Props {
   disabled?: boolean;
@@ -19,7 +20,6 @@ interface Props {
   onSubmit(pc: PC, onComplete: () => void): void;
 }
 
-const classNameOptions = classNames.map((name) => ({ id: name, name }));
 const speciesNameOptions = speciesNames.map((name) => ({ id: name, name }));
 
 export default function PCForm({ disabled, edit, onSubmit }: Props) {
@@ -27,23 +27,22 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
   const [player, setPlayer] = useState(edit?.player ?? "");
   const [name, setName] = useState(edit?.name ?? "");
   const [species, setSpecies] = useState(edit?.species ?? "");
-  const [className, setClassName] = useState(edit?.classLevels[0].name ?? "");
+  const [classLevels, setClassLevels] = useState(
+    edit?.classLevels ?? [{ name: "", level: 1 }]
+  );
 
   const reset = useCallback(() => {
     setPlayer("");
     setName("");
-    setClassName("");
+    setClassLevels([{ name: "", level: 1 }]);
   }, []);
 
   const onFormSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      onSubmit(
-        { player, name, species, classLevels: [{ name: className, level: 1 }] },
-        reset
-      );
+      onSubmit({ player, name, species, classLevels }, reset);
     },
-    [className, name, onSubmit, player, reset, species]
+    [classLevels, name, onSubmit, player, reset, species]
   );
 
   return (
@@ -76,12 +75,10 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
         selected={species}
         onChange={setSpecies}
       />
-      <MyComboBox
-        label="Class"
+      <PCClassLevels
         disabled={disabled}
-        items={classNameOptions}
-        selected={className}
-        onChange={setClassName}
+        classLevels={classLevels}
+        onUpdate={setClassLevels}
       />
 
       <Button isDisabled={disabled} type="submit">

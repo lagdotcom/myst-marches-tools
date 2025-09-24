@@ -35,4 +35,9 @@ form {
   &.isLoading {
     cursor: progress;
   }
+
+  .react-aria-TextField,
+  .react-aria-NumberField {
+    margin: 0;
+  }
 }

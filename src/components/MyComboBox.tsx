@@ -4,11 +4,11 @@ import {
   ComboBox,
   FieldError,
   Input,
+  type Key,
   Label,
   ListBox,
   ListBoxItem,
   Popover,
-  type Key,
 } from "react-aria-components";
 
 interface ComboBoxItem {

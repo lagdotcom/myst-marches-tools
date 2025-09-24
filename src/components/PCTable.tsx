@@ -1,5 +1,6 @@
 import "./App.scss";
 
+import cx from "classnames";
 import {
   Button,
   Cell,
@@ -9,11 +10,10 @@ import {
   TableHeader,
 } from "react-aria-components";
 
-import { MyColumn } from "./MyColumn";
-import useSortedList from "../useSortedList";
 import { usePCList } from "../api";
 import type { ClassLevel, PC } from "../types";
-import cx from "classnames";
+import useSortedList from "../useSortedList";
+import { MyColumn } from "./MyColumn";
 
 interface Props {
   onEdit(pc: PC): void;
