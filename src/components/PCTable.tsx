@@ -75,7 +75,17 @@ export default function PCTable({ onEdit }: Props) {
             <Cell>{pc.species}</Cell>
             <Cell>{classLevels(pc.classLevels)}</Cell>
             <Cell>
-              <MyButton onClick={() => onEdit(pc)}>✏️</MyButton>
+              <MyButton aria-label="Edit" onClick={() => onEdit(pc)}>
+                ✏️
+              </MyButton>
+              {pc.beyondUrl && (
+                <MyButton
+                  aria-label="D&D Beyond"
+                  onClick={() => window.open(pc.beyondUrl)}
+                >
+                  &amp;
+                </MyButton>
+              )}
             </Cell>
           </Row>
         ))}

@@ -4,6 +4,7 @@ export interface PC {
   player: string;
   species: string;
   classLevels: ClassLevel[];
+  beyondUrl: string;
 }
 
 export interface ClassLevel {

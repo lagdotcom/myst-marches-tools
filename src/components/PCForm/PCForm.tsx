@@ -27,6 +27,7 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
   const [player, setPlayer] = useState(edit?.player ?? "");
   const [name, setName] = useState(edit?.name ?? "");
   const [species, setSpecies] = useState(edit?.species ?? "");
+  const [beyondUrl, setBeyondUrl] = useState(edit?.beyondUrl ?? "");
   const [classLevels, setClassLevels] = useState(
     edit?.classLevels ?? [{ name: "", level: 1 }],
   );
@@ -34,6 +35,8 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
   const reset = useCallback(() => {
     setPlayer("");
     setName("");
+    setSpecies("");
+    setBeyondUrl("");
     setClassLevels([{ name: "", level: 1 }]);
   }, []);
 
@@ -41,11 +44,18 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
     (e: FormEvent) => {
       e.preventDefault();
       onSubmit(
-        { id: id ?? `pc:${name}`, player, name, species, classLevels },
+        {
+          id: id ?? `pc:${name}`,
+          player,
+          name,
+          species,
+          classLevels,
+          beyondUrl,
+        },
         reset,
       );
     },
-    [classLevels, id, name, onSubmit, player, reset, species],
+    [beyondUrl, classLevels, id, name, onSubmit, player, reset, species],
   );
 
   return (
@@ -77,6 +87,16 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
         selected={species}
         onChange={setSpecies}
       />
+      <TextField
+        isDisabled={disabled}
+        isRequired
+        value={beyondUrl}
+        onChange={setBeyondUrl}
+      >
+        <Label>D&D Beyond URL</Label>
+        <Input />
+        <FieldError />
+      </TextField>
       <PCClassLevels
         disabled={disabled}
         classLevels={classLevels}

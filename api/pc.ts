@@ -15,6 +15,13 @@ const PC = z.object({
   name: z.string(),
   player: z.string(),
   species: z.string(),
+  beyondUrl: z
+    .string()
+    .url()
+    .startsWith(
+      "https://www.dndbeyond.com/characters",
+      "beyond URL looks wrong"
+    ),
   classLevels: z.array(ClassLevel).min(1, "must have at least one class"),
 });
 
