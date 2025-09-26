@@ -1,8 +1,10 @@
 import { type Dispatch, type SetStateAction, useCallback } from "react";
-import { Button } from "react-aria-components";
 
-import type { ClassLevel } from "../types";
+import type { ClassLevel } from "../../types";
+import { MyButton } from "../common/MyButton";
 import PCClassLevel from "./PCClassLevel";
+import styles from "./PCClassLevels.module.scss";
+
 interface Props {
   disabled?: boolean;
   classLevels: ClassLevel[];
@@ -17,23 +19,23 @@ export default function PCClassLevels({
   const onPatch = useCallback(
     (i: number) => (patch: Partial<ClassLevel>) =>
       onUpdate((old) =>
-        old.map((data, j) => (i === j ? { ...data, ...patch } : data))
+        old.map((data, j) => (i === j ? { ...data, ...patch } : data)),
       ),
-    [onUpdate]
+    [onUpdate],
   );
 
   const onAdd = useCallback(
     () => onUpdate((old) => old.concat({ name: "", level: 1 })),
-    [onUpdate]
+    [onUpdate],
   );
 
   const onRemove = useCallback(
     (i: number) => () => onUpdate((old) => old.filter((_, j) => i !== j)),
-    [onUpdate]
+    [onUpdate],
   );
 
   return (
-    <div>
+    <div className={styles.container}>
       {classLevels.map((data, i) => (
         <PCClassLevel
           key={i}
@@ -43,9 +45,9 @@ export default function PCClassLevels({
           onUpdate={onPatch(i)}
         />
       ))}
-      <Button isDisabled={disabled} onClick={onAdd}>
-        🆕
-      </Button>
+      <MyButton className={styles.add} isDisabled={disabled} onClick={onAdd}>
+        Add New
+      </MyButton>
     </div>
   );
 }

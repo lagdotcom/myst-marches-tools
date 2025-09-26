@@ -1,7 +1,7 @@
 import { Column, type ColumnProps } from "react-aria-components";
 
 export function MyColumn(
-  props: Omit<ColumnProps, "children"> & { children?: React.ReactNode }
+  props: Omit<ColumnProps, "children"> & { children?: React.ReactNode },
 ) {
   return (
     <Column {...props}>

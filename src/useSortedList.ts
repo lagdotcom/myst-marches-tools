@@ -4,7 +4,7 @@ import type { Key, SortDescriptor, SortDirection } from "react-stately";
 export default function useSortedList<T>(
   data: T[],
   initialColumn: Key,
-  initialDirection: SortDirection = "ascending"
+  initialDirection: SortDirection = "ascending",
 ) {
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: initialColumn,
@@ -29,7 +29,7 @@ export default function useSortedList<T>(
         if (sortDescriptor.direction === "descending") cmp *= -1;
         return cmp;
       }),
-    [data, sortDescriptor]
+    [data, sortDescriptor],
   );
 
   return { items, onSortChange: setSortDescriptor, sortDescriptor };

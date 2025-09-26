@@ -1,6 +1,6 @@
+import cx from "classnames";
 import { useCallback } from "react";
 import {
-  Button,
   FieldError,
   Group,
   Input,
@@ -9,9 +9,11 @@ import {
   TextField,
 } from "react-aria-components";
 
-import { classNames } from "../data";
-import type { ClassLevel } from "../types";
-import MyComboBox from "./MyComboBox";
+import { classNames } from "../../data";
+import type { ClassLevel } from "../../types";
+import { MyButton } from "../common/MyButton";
+import MyComboBox from "../common/MyComboBox";
+import styles from "./PCClassLevel.module.scss";
 
 interface Props {
   data: ClassLevel;
@@ -22,6 +24,10 @@ interface Props {
 
 const classNameOptions = classNames.map((name) => ({ id: name, name }));
 
+const classNameToCssClass = Object.fromEntries(
+  classNames.map((name) => [name, styles[name]]),
+);
+
 export default function PCClassLevel({
   data,
   disabled,
@@ -30,23 +36,24 @@ export default function PCClassLevel({
 }: Props) {
   const onNameChange = useCallback(
     (name: string) => onUpdate({ name }),
-    [onUpdate]
+    [onUpdate],
   );
 
   const onLevelChange = useCallback(
     (level: number) => onUpdate({ level }),
-    [onUpdate]
+    [onUpdate],
   );
 
   const onSubclassChange = useCallback(
     (subclass: string) =>
       onUpdate({ subclass: subclass ? subclass : undefined }),
-    [onUpdate]
+    [onUpdate],
   );
 
   return (
-    <div>
+    <div className={cx(styles.container, classNameToCssClass[data.name])}>
       <MyComboBox
+        className={styles.class}
         label="Class"
         disabled={disabled}
         items={classNameOptions}
@@ -55,6 +62,7 @@ export default function PCClassLevel({
       />
 
       <NumberField
+        className={cx("react-aria-NumberField", styles.level)}
         isDisabled={disabled}
         minValue={1}
         maxValue={20}
@@ -63,14 +71,15 @@ export default function PCClassLevel({
       >
         <Label>Level</Label>
         <Group>
-          <Button slot="decrement">➖</Button>
+          <MyButton slot="decrement">➖</MyButton>
           <Input />
-          <Button slot="increment">➕</Button>
+          <MyButton slot="increment">➕</MyButton>
         </Group>
         <FieldError />
       </NumberField>
 
       <TextField
+        className={cx("react-aria-TextField", styles.subclass)}
         isReadOnly={disabled || data.level < 3}
         value={data.subclass ?? ""}
         onChange={onSubclassChange}
@@ -80,7 +89,7 @@ export default function PCClassLevel({
         <FieldError />
       </TextField>
 
-      <Button onClick={onRemove}>🗑️</Button>
+      <MyButton onClick={onRemove}>Remove</MyButton>
     </div>
   );
 }

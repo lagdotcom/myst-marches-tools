@@ -35,7 +35,7 @@ export function useAddPC() {
         return data.error;
       }
     },
-    [setIsSubmitting]
+    [setIsSubmitting],
   );
 
   return { isSubmitting, submit };
@@ -58,7 +58,7 @@ export function useEditPC() {
         return data.error;
       }
     },
-    [setIsSubmitting]
+    [setIsSubmitting],
   );
 
   return { isSubmitting, submit };

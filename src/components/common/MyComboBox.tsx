@@ -1,6 +1,6 @@
+import cx from "classnames";
 import { useCallback } from "react";
 import {
-  Button,
   ComboBox,
   FieldError,
   Input,
@@ -11,12 +11,15 @@ import {
   Popover,
 } from "react-aria-components";
 
+import { MyButton } from "./MyButton";
+
 interface ComboBoxItem {
   id: string;
   name: string;
 }
 
 interface Props<TItem extends ComboBoxItem> {
+  className?: string;
   disabled?: boolean;
   label: string;
   items: TItem[];
@@ -25,6 +28,7 @@ interface Props<TItem extends ComboBoxItem> {
 }
 
 export default function MyComboBox<TItem extends ComboBoxItem>({
+  className,
   disabled,
   label,
   items,
@@ -35,11 +39,12 @@ export default function MyComboBox<TItem extends ComboBoxItem>({
     (key: Key | null) => {
       onChange(key ? (key as string) : "");
     },
-    [onChange]
+    [onChange],
   );
 
   return (
     <ComboBox
+      className={cx("react-aria-ComboBox", className)}
       isDisabled={disabled}
       defaultItems={items}
       selectedKey={selected}
@@ -48,7 +53,7 @@ export default function MyComboBox<TItem extends ComboBoxItem>({
       <Label>{label}</Label>
       <div>
         <Input />
-        <Button>⯆</Button>
+        <MyButton>⯆</MyButton>
       </div>
       <FieldError />
       <Popover maxHeight={400}>

@@ -1,0 +1,42 @@
+.level {
+  display: inline-block;
+  border-bottom: 2px solid black;
+  margin-right: 5px;
+
+  &.Barbarian {
+    border-color: var(--barbarian);
+  }
+  &.Bard {
+    border-color: var(--bard);
+  }
+  &.Cleric {
+    border-color: var(--cleric);
+  }
+  &.Druid {
+    border-color: var(--druid);
+  }
+  &.Fighter {
+    border-color: var(--fighter);
+  }
+  &.Monk {
+    border-color: var(--monk);
+  }
+  &.Paladin {
+    border-color: var(--paladin);
+  }
+  &.Ranger {
+    border-color: var(--ranger);
+  }
+  &.Rogue {
+    border-color: var(--rogue);
+  }
+  &.Sorcerer {
+    border-color: var(--sorcerer);
+  }
+  &.Warlock {
+    border-color: var(--warlock);
+  }
+  &.Wizard {
+    border-color: var(--wizard);
+  }
+}

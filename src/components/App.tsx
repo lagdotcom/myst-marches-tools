@@ -2,11 +2,12 @@ import "./App.scss";
 
 import { Analytics } from "@vercel/analytics/react";
 import { useCallback, useState } from "react";
-import { Button, Dialog, Heading, Modal } from "react-aria-components";
+import { Dialog, Heading, Modal } from "react-aria-components";
 
 import { useAddPC, useEditPC, usePCList } from "../api";
 import type { PC } from "../types";
-import PCForm from "./PCForm";
+import { MyButton } from "./common/MyButton";
+import PCForm from "./PCForm/PCForm";
 import PCTable from "./PCTable";
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
       onComplete();
       await mutate();
     },
-    [addPC, mutate]
+    [addPC, mutate],
   );
 
   const onSubmitEdit = useCallback(
@@ -44,7 +45,7 @@ function App() {
 
       await mutate();
     },
-    [editPC, mutate]
+    [editPC, mutate],
   );
 
   return (
@@ -52,7 +53,7 @@ function App() {
       <Analytics />
 
       <nav>
-        <Button onClick={() => setAddOpen(true)}>Add PC</Button>
+        <MyButton onClick={() => setAddOpen(true)}>Add PC</MyButton>
       </nav>
 
       <article>

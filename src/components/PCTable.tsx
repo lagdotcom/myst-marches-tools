@@ -2,7 +2,6 @@ import "./App.scss";
 
 import cx from "classnames";
 import {
-  Button,
   Cell,
   Row,
   Table,
@@ -11,28 +10,37 @@ import {
 } from "react-aria-components";
 
 import { usePCList } from "../api";
+import { classNames } from "../data";
 import type { ClassLevel, PC } from "../types";
 import useSortedList from "../useSortedList";
-import { MyColumn } from "./MyColumn";
+import { MyButton } from "./common/MyButton";
+import { MyColumn } from "./common/MyColumn";
+import styles from "./PCTable.module.scss";
 
 interface Props {
   onEdit(pc: PC): void;
 }
 
+const classNameToCssClass = Object.fromEntries(
+  classNames.map((name) => [name, styles[name]]),
+);
+
+function CLDisplay({ subclass, name, level }: ClassLevel) {
+  return (
+    <span className={cx(styles.level, classNameToCssClass[name])}>
+      {subclass} {name} {level}
+    </span>
+  );
+}
+
 const classLevels = (data: ClassLevel[]) =>
-  data
-    .map((cl) =>
-      cl.subclass
-        ? `${cl.subclass} ${cl.name} ${cl.level}`
-        : `${cl.name} ${cl.level}`
-    )
-    .join(", ");
+  data.map((cl, i) => <CLDisplay key={i} {...cl} />);
 
 export default function PCTable({ onEdit }: Props) {
   const { data, error, isLoading } = usePCList();
   const { items, onSortChange, sortDescriptor } = useSortedList(
     data?.results ?? [],
-    "name"
+    "name",
   );
 
   return (
@@ -67,7 +75,7 @@ export default function PCTable({ onEdit }: Props) {
             <Cell>{pc.species}</Cell>
             <Cell>{classLevels(pc.classLevels)}</Cell>
             <Cell>
-              <Button onClick={() => onEdit(pc)}>✏️</Button>
+              <MyButton onClick={() => onEdit(pc)}>✏️</MyButton>
             </Cell>
           </Row>
         ))}

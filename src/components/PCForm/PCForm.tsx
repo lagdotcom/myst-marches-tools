@@ -1,7 +1,6 @@
 import cx from "classnames";
 import { type FormEvent, useCallback, useMemo, useState } from "react";
 import {
-  Button,
   FieldError,
   Form,
   Input,
@@ -9,9 +8,10 @@ import {
   TextField,
 } from "react-aria-components";
 
-import { speciesNames } from "../data";
-import type { PC } from "../types";
-import MyComboBox from "./MyComboBox";
+import { speciesNames } from "../../data";
+import type { PC } from "../../types";
+import { MyButton } from "../common/MyButton";
+import MyComboBox from "../common/MyComboBox";
 import PCClassLevels from "./PCClassLevels";
 
 interface Props {
@@ -28,7 +28,7 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
   const [name, setName] = useState(edit?.name ?? "");
   const [species, setSpecies] = useState(edit?.species ?? "");
   const [classLevels, setClassLevels] = useState(
-    edit?.classLevels ?? [{ name: "", level: 1 }]
+    edit?.classLevels ?? [{ name: "", level: 1 }],
   );
 
   const reset = useCallback(() => {
@@ -42,7 +42,7 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
       e.preventDefault();
       onSubmit({ player, name, species, classLevels }, reset);
     },
-    [classLevels, name, onSubmit, player, reset, species]
+    [classLevels, name, onSubmit, player, reset, species],
   );
 
   return (
@@ -81,9 +81,9 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
         onUpdate={setClassLevels}
       />
 
-      <Button isDisabled={disabled} type="submit">
+      <MyButton isDisabled={disabled} type="submit">
         Submit
-      </Button>
+      </MyButton>
     </Form>
   );
 }
