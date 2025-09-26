@@ -59,7 +59,10 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
   );
 
   return (
-    <Form className={cx({ disabled })} onSubmit={onFormSubmit}>
+    <Form
+      className={cx("react-aria-Form", { disabled })}
+      onSubmit={onFormSubmit}
+    >
       <TextField
         isDisabled={disabled}
         isRequired
