@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { type FormEvent, useCallback, useMemo, useState } from "react";
+import { type FormEvent, useCallback, useState } from "react";
 import {
   FieldError,
   Form,
@@ -23,7 +23,7 @@ interface Props {
 const speciesNameOptions = speciesNames.map((name) => ({ id: name, name }));
 
 export default function PCForm({ disabled, edit, onSubmit }: Props) {
-  const editing = useMemo(() => !!edit, [edit]);
+  const [id] = useState(edit?.id ?? "");
   const [player, setPlayer] = useState(edit?.player ?? "");
   const [name, setName] = useState(edit?.name ?? "");
   const [species, setSpecies] = useState(edit?.species ?? "");
@@ -40,9 +40,9 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
   const onFormSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      onSubmit({ player, name, species, classLevels }, reset);
+      onSubmit({ id, player, name, species, classLevels }, reset);
     },
-    [classLevels, name, onSubmit, player, reset, species],
+    [classLevels, id, name, onSubmit, player, reset, species],
   );
 
   return (
@@ -60,7 +60,6 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
       <TextField
         isDisabled={disabled}
         isRequired
-        isReadOnly={editing}
         value={name}
         onChange={setName}
       >

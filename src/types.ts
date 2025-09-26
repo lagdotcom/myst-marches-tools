@@ -1,4 +1,5 @@
 export interface PC {
+  id: string;
   name: string;
   player: string;
   species: string;

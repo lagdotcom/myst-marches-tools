@@ -16,7 +16,7 @@ export const POST = async (request: Request) => {
   const data = await request.json();
   // TODO validate
 
-  const key = `pc:${data.name}`;
+  const key = `pc:${data.id}`;
 
   const redis = await getRedis();
 
@@ -33,7 +33,7 @@ export const PUT = async (request: Request) => {
   const data = await request.json();
   // TODO validate
 
-  const key = `pc:${data.name}`;
+  const key = data.id;
 
   const redis = await getRedis();
 
