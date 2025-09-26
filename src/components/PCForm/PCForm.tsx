@@ -23,7 +23,7 @@ interface Props {
 const speciesNameOptions = speciesNames.map((name) => ({ id: name, name }));
 
 export default function PCForm({ disabled, edit, onSubmit }: Props) {
-  const [id] = useState(edit?.id ?? "");
+  const [id] = useState(edit?.id);
   const [player, setPlayer] = useState(edit?.player ?? "");
   const [name, setName] = useState(edit?.name ?? "");
   const [species, setSpecies] = useState(edit?.species ?? "");
@@ -40,7 +40,10 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
   const onFormSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      onSubmit({ id, player, name, species, classLevels }, reset);
+      onSubmit(
+        { id: id ?? `pc:${name}`, player, name, species, classLevels },
+        reset,
+      );
     },
     [classLevels, id, name, onSubmit, player, reset, species],
   );
