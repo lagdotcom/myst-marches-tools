@@ -537,7 +537,9 @@ input {
   color: var(--text-color);
   outline: none;
   max-width: 250px;
-  transition: transform 200ms, opacity 200ms;
+  transition:
+    transform 200ms,
+    opacity 200ms;
   --starting-scale: scale(0.9);
   transform-origin: var(--trigger-anchor-point);
   overflow-y: auto;
@@ -650,4 +652,9 @@ input {
     width: 6rem;
     flex: 1;
   }
+}
+
+.react-aria-FieldError {
+  font-size: 0.9em;
+  color: var(--red-400);
 }

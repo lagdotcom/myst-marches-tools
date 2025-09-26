@@ -23,6 +23,7 @@ interface Props<TItem extends ComboBoxItem> {
   disabled?: boolean;
   label: string;
   items: TItem[];
+  required?: boolean;
   selected: string;
   onChange(key: string): void;
 }
@@ -32,6 +33,7 @@ export default function MyComboBox<TItem extends ComboBoxItem>({
   disabled,
   label,
   items,
+  required,
   selected,
   onChange,
 }: Props<TItem>) {
@@ -49,6 +51,7 @@ export default function MyComboBox<TItem extends ComboBoxItem>({
       defaultItems={items}
       selectedKey={selected}
       onSelectionChange={onSelectionChange}
+      isRequired={required}
     >
       <Label>{label}</Label>
       <div>

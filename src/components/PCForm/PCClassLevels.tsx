@@ -46,7 +46,7 @@ export default function PCClassLevels({
         />
       ))}
       <MyButton className={styles.add} isDisabled={disabled} onClick={onAdd}>
-        Add New
+        Add Class
       </MyButton>
     </div>
   );

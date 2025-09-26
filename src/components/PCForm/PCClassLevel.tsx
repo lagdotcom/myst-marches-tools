@@ -59,6 +59,7 @@ export default function PCClassLevel({
         items={classNameOptions}
         selected={data.name}
         onChange={onNameChange}
+        required
       />
 
       <NumberField
@@ -89,7 +90,9 @@ export default function PCClassLevel({
         <FieldError />
       </TextField>
 
-      <MyButton onClick={onRemove}>Remove</MyButton>
+      <MyButton onClick={onRemove} isDisabled={disabled}>
+        Remove
+      </MyButton>
     </div>
   );
 }
