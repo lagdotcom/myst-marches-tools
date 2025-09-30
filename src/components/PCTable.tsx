@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import {
   Cell,
   Row,
@@ -44,6 +44,11 @@ export default function PCTable({ onEdit }: Props) {
     data ?? [],
     "name",
   );
+
+  useEffect(() => console.log("data", data), [data]);
+  useEffect(() => console.log("error", error), [error]);
+  useEffect(() => console.log("isLoading", isLoading), [isLoading]);
+  useEffect(() => console.log("items", items), [items]);
 
   const ddbFetch = useCallback(async (id: string) => {
     const res = await fetch(`/api/fetch?id=${id}`);

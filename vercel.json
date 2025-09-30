@@ -1,9 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
-  "framework": "vite",
-  "rewrites": [
-    { "source": "/pc", "destination": "/index.html" },
-    { "source": "/session", "destination": "/index.html" }
-  ]
-}
