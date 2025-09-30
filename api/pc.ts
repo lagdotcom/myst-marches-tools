@@ -1,8 +1,7 @@
 import { createClient } from "redis";
 import * as z from "zod";
 
-export const getRedis = () =>
-  createClient({ url: process.env.REDIS_URL }).connect();
+const getRedis = () => createClient({ url: process.env.REDIS_URL }).connect();
 
 const ClassLevel = z.object({
   name: z.string(),
@@ -38,8 +37,8 @@ function formatZodError<T>(error: z.ZodError<T>) {
 export const GET = async () => {
   const redis = await getRedis();
 
-  const keys = await redis.KEYS("pc:*");
-  const results = keys.length ? await redis.json.MGET(keys, ".") : [];
+  const keys = await redis.keys("pc:*");
+  const results = keys.length ? await redis.json.mGet(keys, ".") : [];
 
   return new Response(JSON.stringify({ results }), { status: 200 });
 };
@@ -55,12 +54,12 @@ export const POST = async (request: Request) => {
 
   const redis = await getRedis();
 
-  if ((await redis.EXISTS(key)) > 0)
+  if ((await redis.exists(key)) > 0)
     return new Response(JSON.stringify({ error: "already exists" }), {
       status: 400,
     });
 
-  await redis.json.SET(key, "$", pc);
+  await redis.json.set(key, "$", pc);
   return new Response(null, { status: 201 });
 };
 
@@ -74,11 +73,11 @@ export const PUT = async (request: Request) => {
 
   const redis = await getRedis();
 
-  if ((await redis.EXISTS(key)) === 0)
+  if ((await redis.exists(key)) === 0)
     return new Response(JSON.stringify({ error: "does not exist" }), {
       status: 400,
     });
 
-  await redis.json.SET(key, "$", pc);
+  await redis.json.set(key, "$", pc);
   return new Response(null, { status: 200 });
 };
