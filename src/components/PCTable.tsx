@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import {
   Cell,
   Row,
@@ -8,7 +8,7 @@ import {
   TableHeader,
 } from "react-aria-components";
 
-import { usePCList } from "../api";
+import { usePCList, useSessionList } from "../api";
 import { CharacterResponse } from "../CharacterV5";
 import type { PC } from "../types";
 import useSortedList from "../useSortedList";
@@ -24,8 +24,28 @@ const showDDBFetch = false;
 
 export default function PCTable({ onEdit }: Props) {
   const { data, error, isLoading } = usePCList();
+  const { data: sessions } = useSessionList();
+
+  const augmented = useMemo(
+    () =>
+      data?.map((pc) => {
+        const pcSessions = sessions?.filter((s) => s.pcs.includes(pc.id)) ?? [];
+
+        return {
+          ...pc,
+          class: pc.classLevels
+            .map((cl) => `${cl.name} ${cl.level} - ${cl.subclass}`)
+            .join(" "),
+          sessionCount: pcSessions.length,
+          session:
+            pcSessions.sort((a, b) => b.date.localeCompare(a.date))[0]?.date ??
+            "-",
+        };
+      }) ?? [],
+    [data, sessions],
+  );
   const { items, onSortChange, sortDescriptor } = useSortedList(
-    data ?? [],
+    augmented,
     "name",
   );
 
@@ -53,7 +73,12 @@ export default function PCTable({ onEdit }: Props) {
         <MyColumn id="species" allowsSorting>
           Species
         </MyColumn>
-        <MyColumn>Class</MyColumn>
+        <MyColumn id="class" allowsSorting>
+          Class
+        </MyColumn>
+        <MyColumn id="session" allowsSorting>
+          Last Session
+        </MyColumn>
         <MyColumn>Actions</MyColumn>
       </TableHeader>
       <TableBody
@@ -72,6 +97,7 @@ export default function PCTable({ onEdit }: Props) {
                 <ClassLevelDisplay key={i} {...cl} />
               ))}
             </Cell>
+            <Cell>{pc.session}</Cell>
             <Cell>
               <MyButton aria-label="Edit" onClick={() => onEdit(pc)}>
                 ✏️

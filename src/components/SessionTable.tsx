@@ -1,5 +1,6 @@
+import { getLocalTimeZone, parseDate } from "@internationalized/date";
 import cx from "classnames";
-import { useCallback } from "react";
+import { useMemo } from "react";
 import {
   Cell,
   Row,
@@ -25,19 +26,24 @@ function getShortName(pc?: PC) {
 export default function SessionTable({ onEdit }: Props) {
   const { data: pcs } = usePCList();
   const { data, error, isLoading } = useSessionList();
+  const augmented = useMemo(
+    () =>
+      data?.map((s) => ({
+        ...s,
+        dateLocal: parseDate(s.date)
+          .toDate(getLocalTimeZone())
+          .toLocaleDateString(),
+        pcNames: s.pcs
+          .map((id) => getShortName(pcs?.find((pc) => pc.id === id)) ?? id)
+          .sort()
+          .join(", "),
+      })) ?? [],
+    [data, pcs],
+  );
   const { items, onSortChange, sortDescriptor } = useSortedList(
-    data ?? [],
+    augmented,
     "date",
     "descending",
-  );
-
-  const getPCNames = useCallback(
-    (ids: string[]) =>
-      ids
-        .map((id) => getShortName(pcs?.find((pc) => pc.id === id)) ?? id)
-        .sort()
-        .join(", "),
-    [pcs],
   );
 
   return (
@@ -48,13 +54,18 @@ export default function SessionTable({ onEdit }: Props) {
       onSortChange={onSortChange}
     >
       <TableHeader>
-        <MyColumn id="date" allowsSorting isRowHeader>
+        <MyColumn id="name" allowsSorting isRowHeader>
+          Name
+        </MyColumn>
+        <MyColumn id="date" allowsSorting>
           Date
         </MyColumn>
         <MyColumn id="dm" allowsSorting>
           DM
         </MyColumn>
-        <MyColumn>PCs</MyColumn>
+        <MyColumn id="pcNames" allowsSorting>
+          PCs
+        </MyColumn>
         <MyColumn>Actions</MyColumn>
       </TableHeader>
       <TableBody
@@ -69,9 +80,10 @@ export default function SessionTable({ onEdit }: Props) {
       >
         {(session) => (
           <Row>
-            <Cell>{session.date}</Cell>
+            <Cell>{session.name}</Cell>
+            <Cell>{session.dateLocal}</Cell>
             <Cell>{session.dm}</Cell>
-            <Cell>{getPCNames(session.pcs)}</Cell>
+            <Cell>{session.pcNames}</Cell>
             <Cell>
               <MyButton aria-label="Edit" onClick={() => onEdit(session)}>
                 ✏️
