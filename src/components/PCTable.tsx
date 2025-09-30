@@ -1,6 +1,5 @@
-import "./App.scss";
-
 import cx from "classnames";
+import { useCallback } from "react";
 import {
   Cell,
   Row,
@@ -10,6 +9,7 @@ import {
 } from "react-aria-components";
 
 import { usePCList } from "../api";
+import { CharacterResponse } from "../CharacterV5";
 import { classNames } from "../data";
 import type { ClassLevel, PC } from "../types";
 import useSortedList from "../useSortedList";
@@ -33,6 +33,8 @@ function CLDisplay({ subclass, name, level }: ClassLevel) {
   );
 }
 
+const showDDBFetch = false;
+
 const classLevels = (data: ClassLevel[]) =>
   data.map((cl, i) => <CLDisplay key={i} {...cl} />);
 
@@ -42,6 +44,13 @@ export default function PCTable({ onEdit }: Props) {
     data?.results ?? [],
     "name",
   );
+
+  const ddbFetch = useCallback(async (id: string) => {
+    const res = await fetch(`/api/fetch?id=${id}`);
+    const raw = await res.json();
+    const parsed = CharacterResponse.parse(raw);
+    console.log(parsed);
+  }, []);
 
   return (
     <Table
@@ -79,12 +88,17 @@ export default function PCTable({ onEdit }: Props) {
                 ✏️
               </MyButton>
               {pc.beyondUrl && (
-                <MyButton
-                  aria-label="D&D Beyond"
-                  onClick={() => window.open(pc.beyondUrl)}
-                >
-                  &amp;
-                </MyButton>
+                <>
+                  <MyButton
+                    aria-label="D&D Beyond"
+                    onClick={() => window.open(pc.beyondUrl)}
+                  >
+                    &amp;
+                  </MyButton>
+                  {showDDBFetch && (
+                    <MyButton onClick={() => ddbFetch(pc.id)}>test</MyButton>
+                  )}
+                </>
               )}
             </Cell>
           </Row>
