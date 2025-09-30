@@ -41,7 +41,7 @@ const classLevels = (data: ClassLevel[]) =>
 export default function PCTable({ onEdit }: Props) {
   const { data, error, isLoading } = usePCList();
   const { items, onSortChange, sortDescriptor } = useSortedList(
-    data?.results ?? [],
+    data ?? [],
     "name",
   );
 
@@ -73,12 +73,13 @@ export default function PCTable({ onEdit }: Props) {
         <MyColumn>Actions</MyColumn>
       </TableHeader>
       <TableBody
+        items={items}
         renderEmptyState={() =>
           isLoading ? "Loading..." : error ? `Error: ${error}` : "No PCs found"
         }
       >
-        {items.map((pc, index) => (
-          <Row key={index}>
+        {(pc) => (
+          <Row>
             <Cell>{pc.player}</Cell>
             <Cell>{pc.name}</Cell>
             <Cell>{pc.species}</Cell>
@@ -102,7 +103,7 @@ export default function PCTable({ onEdit }: Props) {
               )}
             </Cell>
           </Row>
-        ))}
+        )}
       </TableBody>
     </Table>
   );

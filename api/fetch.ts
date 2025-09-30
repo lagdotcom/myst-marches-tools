@@ -7,7 +7,7 @@ async function cachedFetchJson(
   redis: Redis,
   key: string,
   url: string,
-  ttl: number = 60 * 60
+  ttl: number = 60 * 60,
 ) {
   const cached = await redis.json.get(key);
   if (cached) return cached;
@@ -49,7 +49,7 @@ export const GET = async (req: Request) => {
   const data = await cachedFetchJson(
     redis,
     `ddbcache:${characterId}`,
-    `https://character-service.dndbeyond.com/character/v5/character/${characterId}`
+    `https://character-service.dndbeyond.com/character/v5/character/${characterId}`,
   );
   return new Response(JSON.stringify(data));
 };

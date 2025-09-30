@@ -31,7 +31,7 @@ export const GET = async () => {
   const keys = await redis.keys(glob);
   const results = keys.length ? await redis.json.mGet(keys, ".") : [];
 
-  return new Response(JSON.stringify({ results }), { status: 200 });
+  return new Response(JSON.stringify(results));
 };
 
 export const POST = async (request: Request) => {

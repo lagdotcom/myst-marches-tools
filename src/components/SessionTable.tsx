@@ -26,7 +26,7 @@ export default function SessionTable({ onEdit }: Props) {
   const { data: pcs } = usePCList();
   const { data, error, isLoading } = useSessionList();
   const { items, onSortChange, sortDescriptor } = useSortedList(
-    data?.results ?? [],
+    data ?? [],
     "date",
     "descending",
   );
@@ -34,9 +34,7 @@ export default function SessionTable({ onEdit }: Props) {
   const getPCNames = useCallback(
     (ids: string[]) =>
       ids
-        .map(
-          (id) => getShortName(pcs?.results.find((pc) => pc.id === id)) ?? id,
-        )
+        .map((id) => getShortName(pcs?.find((pc) => pc.id === id)) ?? id)
         .sort()
         .join(", "),
     [pcs],
@@ -56,20 +54,21 @@ export default function SessionTable({ onEdit }: Props) {
         <MyColumn id="dm" allowsSorting>
           DM
         </MyColumn>
-        <MyColumn allowsSorting>PCs</MyColumn>
+        <MyColumn>PCs</MyColumn>
         <MyColumn>Actions</MyColumn>
       </TableHeader>
       <TableBody
+        items={items}
         renderEmptyState={() =>
           isLoading
             ? "Loading..."
             : error
-              ? `Error:${error}`
-              : "No Sessions found"
+              ? `Error: ${error}`
+              : "No sessions found"
         }
       >
-        {items.map((session, index) => (
-          <Row key={index}>
+        {(session) => (
+          <Row>
             <Cell>{session.date}</Cell>
             <Cell>{session.dm}</Cell>
             <Cell>{getPCNames(session.pcs)}</Cell>
@@ -79,7 +78,7 @@ export default function SessionTable({ onEdit }: Props) {
               </MyButton>
             </Cell>
           </Row>
-        ))}
+        )}
       </TableBody>
     </Table>
   );

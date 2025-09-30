@@ -13,7 +13,7 @@ export default function useSortedList<T>(
 
   const items = useMemo(
     () =>
-      data.sort((a, b) => {
+      data.slice().sort((a, b) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         const first = a[sortDescriptor.column] ?? "";

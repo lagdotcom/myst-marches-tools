@@ -23,7 +23,7 @@ const PC = z.object({
     .url()
     .startsWith(
       "https://www.dndbeyond.com/characters",
-      "beyond URL looks wrong"
+      "beyond URL looks wrong",
     ),
   classLevels: z.array(ClassLevel).min(1, "must have at least one class"),
 });
@@ -44,7 +44,7 @@ export const GET = async () => {
   const keys = await redis.keys(glob);
   const results = keys.length ? await redis.json.mGet(keys, ".") : [];
 
-  return new Response(JSON.stringify({ results }), { status: 200 });
+  return new Response(JSON.stringify(results));
 };
 
 export const POST = async (request: Request) => {

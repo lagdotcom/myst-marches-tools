@@ -11,18 +11,11 @@ export interface ErrorResponse {
   error: string;
 }
 
-export interface PCListResponse {
-  results: PC[];
-}
-const fetchPCList = (url: string) =>
-  fetch(url).then<PCListResponse>((res) => res.json());
+const fetchPCList = (url: string) => fetch(url).then<PC[]>((res) => res.json());
 export const usePCList = () => useSWR(pcRoot, fetchPCList);
 
-export interface SessionResponse {
-  results: Session[];
-}
 const fetchSessionList = (url: string) =>
-  fetch(url).then<SessionResponse>((res) => res.json());
+  fetch(url).then<Session[]>((res) => res.json());
 export const useSessionList = () => useSWR(sessionRoot, fetchSessionList);
 
 function useEndpoint<T>(url: string) {
@@ -42,7 +35,7 @@ function useEndpoint<T>(url: string) {
         return data.error;
       }
     },
-    [setIsSubmitting, url]
+    [setIsSubmitting, url],
   );
 
   const post = useCallback((data: T) => submit("POST", data), [submit]);
