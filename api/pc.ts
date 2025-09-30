@@ -3,6 +3,9 @@ import * as z from "zod";
 
 const getRedis = () => createClient({ url: process.env.REDIS_URL }).connect();
 
+const prefix = "pc:";
+const glob = prefix + "*";
+
 const ClassLevel = z.object({
   name: z.string(),
   level: z.number(),
@@ -10,7 +13,7 @@ const ClassLevel = z.object({
 });
 
 const PC = z.object({
-  id: z.string().startsWith("pc:"),
+  id: z.string().startsWith(prefix),
   name: z.string(),
   player: z.string(),
   species: z.string(),
@@ -37,7 +40,7 @@ function formatZodError<T>(error: z.ZodError<T>) {
 export const GET = async () => {
   const redis = await getRedis();
 
-  const keys = await redis.keys("pc:*");
+  const keys = await redis.keys(glob);
   const results = keys.length ? await redis.json.mGet(keys, ".") : [];
 
   return new Response(JSON.stringify({ results }), { status: 200 });
@@ -49,7 +52,7 @@ export const POST = async (request: Request) => {
     return new Response(JSON.stringify({ error: formatZodError(error) }), {
       status: 400,
     });
-  const key = `pc:${pc.name}`;
+  const key = prefix + pc.name;
   pc.id = key;
 
   const redis = await getRedis();

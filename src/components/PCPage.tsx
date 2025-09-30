@@ -1,6 +1,3 @@
-import "./App.scss";
-
-import { Analytics } from "@vercel/analytics/react";
 import { useCallback, useState } from "react";
 import { Dialog, Heading, Modal } from "react-aria-components";
 
@@ -10,7 +7,7 @@ import { MyButton } from "./common/MyButton";
 import PCForm from "./PCForm/PCForm";
 import PCTable from "./PCTable";
 
-function App() {
+export default function PCPage() {
   const { mutate } = usePCList();
   const addPC = useAddPC();
   const editPC = useEditPC();
@@ -49,16 +46,11 @@ function App() {
   );
 
   return (
-    <main>
-      <Analytics />
-
-      <nav>
+    <>
+      <div>
         <MyButton onClick={() => setAddOpen(true)}>Add PC</MyButton>
-      </nav>
-
-      <article>
-        <PCTable onEdit={onEditPC} />
-      </article>
+      </div>
+      <PCTable onEdit={onEditPC} />
 
       <Modal isOpen={isAddOpen} onOpenChange={setAddOpen} isDismissable>
         <Dialog>
@@ -77,8 +69,6 @@ function App() {
           />
         </Dialog>
       </Modal>
-    </main>
+    </>
   );
 }
-
-export default App;
