@@ -26,6 +26,9 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
   const [id] = useState(edit?.id);
   const [player, setPlayer] = useState(edit?.player ?? "");
   const [name, setName] = useState(edit?.name ?? "");
+  const [shortName, setShortName] = useState(
+    edit?.shortName ?? edit?.name ?? "",
+  );
   const [species, setSpecies] = useState(edit?.species ?? "");
   const [beyondUrl, setBeyondUrl] = useState(edit?.beyondUrl ?? "");
   const [classLevels, setClassLevels] = useState(
@@ -35,6 +38,7 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
   const reset = useCallback(() => {
     setPlayer("");
     setName("");
+    setShortName("");
     setSpecies("");
     setBeyondUrl("");
     setClassLevels([{ name: "", level: 1 }]);
@@ -43,11 +47,13 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
   const onFormSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
+      const short = shortName ? shortName : undefined;
       onSubmit(
         {
-          id: id ?? `pc:${name}`,
+          id: id ?? `pc:${short ?? name}`,
           player,
           name,
+          shortName: short,
           species,
           classLevels,
           beyondUrl,
@@ -55,7 +61,17 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
         reset,
       );
     },
-    [beyondUrl, classLevels, id, name, onSubmit, player, reset, species],
+    [
+      beyondUrl,
+      classLevels,
+      id,
+      name,
+      onSubmit,
+      player,
+      reset,
+      shortName,
+      species,
+    ],
   );
 
   return (
@@ -82,6 +98,15 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
         <Label>Name</Label>
         <Input />
         <FieldError />
+      </TextField>{" "}
+      <TextField
+        isDisabled={disabled}
+        value={shortName}
+        onChange={setShortName}
+      >
+        <Label>Short Name</Label>
+        <Input />
+        <FieldError />
       </TextField>
       <MyComboBox
         label="Species"
@@ -105,7 +130,6 @@ export default function PCForm({ disabled, edit, onSubmit }: Props) {
         classLevels={classLevels}
         onUpdate={setClassLevels}
       />
-
       <MyButton isDisabled={disabled} type="submit">
         Submit
       </MyButton>

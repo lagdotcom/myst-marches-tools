@@ -1,31 +1,18 @@
 import { createClient } from "redis";
+import { v4 } from "uuid";
 import * as z from "zod";
 
 const getRedis = () => createClient({ url: process.env.REDIS_URL }).connect();
 
-const prefix = "pc:";
+const prefix = "session:";
 const glob = prefix + "*";
 
-const ClassLevel = z.object({
+const Session = z.object({
+  id: z.string().startsWith("session:"),
   name: z.string(),
-  level: z.number(),
-  subclass: z.optional(z.string()),
-});
-
-const PC = z.object({
-  id: z.string().startsWith(prefix),
-  name: z.string(),
-  shortName: z.string().optional(),
-  player: z.string(),
-  species: z.string(),
-  beyondUrl: z
-    .string()
-    .url()
-    .startsWith(
-      "https://www.dndbeyond.com/characters",
-      "beyond URL looks wrong"
-    ),
-  classLevels: z.array(ClassLevel).min(1, "must have at least one class"),
+  date: z.string().date(),
+  dm: z.string(),
+  pcs: z.array(z.string()),
 });
 
 function formatZodError<T>(error: z.ZodError<T>) {
@@ -48,13 +35,13 @@ export const GET = async () => {
 };
 
 export const POST = async (request: Request) => {
-  const { error, data: pc } = PC.safeParse(await request.json());
+  const { error, data: session } = Session.safeParse(await request.json());
   if (error)
     return new Response(JSON.stringify({ error: formatZodError(error) }), {
       status: 400,
     });
-  const key = prefix + pc.name;
-  pc.id = key;
+  const key = prefix + v4();
+  session.id = key;
 
   const redis = await getRedis();
 
@@ -63,17 +50,17 @@ export const POST = async (request: Request) => {
       status: 400,
     });
 
-  await redis.json.set(key, "$", pc);
+  await redis.json.set(key, "$", session);
   return new Response(null, { status: 201 });
 };
 
 export const PUT = async (request: Request) => {
-  const { error, data: pc } = PC.safeParse(await request.json());
+  const { error, data: session } = Session.safeParse(await request.json());
   if (error)
     return new Response(JSON.stringify({ error: formatZodError(error) }), {
       status: 400,
     });
-  const key = pc.id;
+  const key = session.id;
 
   const redis = await getRedis();
 
@@ -82,6 +69,6 @@ export const PUT = async (request: Request) => {
       status: 400,
     });
 
-  await redis.json.set(key, "$", pc);
+  await redis.json.set(key, "$", session);
   return new Response(null, { status: 200 });
 };

@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import HomePage from "./components/HomePage.tsx";
 import PCPage from "./components/PCPage.tsx";
 import RootLayout from "./components/RootLayout.tsx";
+import SessionPage from "./components/SessionPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, Component: HomePage },
       { path: "pc", Component: PCPage },
+      { path: "session", Component: SessionPage },
     ],
   },
 ]);

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { Dialog, Heading, Modal } from "react-aria-components";
 
-import { useAddPC, useEditPC, usePCList } from "../api";
+import { usePCAPI, usePCList } from "../api";
 import type { PC } from "../types";
 import { MyButton } from "./common/MyButton";
 import PCForm from "./PCForm/PCForm";
@@ -9,8 +9,7 @@ import PCTable from "./PCTable";
 
 export default function PCPage() {
   const { mutate } = usePCList();
-  const addPC = useAddPC();
-  const editPC = useEditPC();
+  const { isSubmitting, post, put } = usePCAPI();
   const [isAddOpen, setAddOpen] = useState(false);
   const [isEditOpen, setEditOpen] = useState(false);
   const [editingPC, setEditingPC] = useState<PC>();
@@ -22,18 +21,18 @@ export default function PCPage() {
 
   const onSubmitAdd = useCallback(
     async (pc: PC, onComplete: () => void) => {
-      const error = await addPC.submit(pc);
+      const error = await post(pc);
       if (error) return alert(error);
 
       onComplete();
       await mutate();
     },
-    [addPC, mutate],
+    [mutate, post],
   );
 
   const onSubmitEdit = useCallback(
     async (pc: PC, onComplete: () => void) => {
-      const error = await editPC.submit(pc);
+      const error = await put(pc);
       if (error) return alert(error);
 
       onComplete();
@@ -42,7 +41,7 @@ export default function PCPage() {
 
       await mutate();
     },
-    [editPC, mutate],
+    [mutate, put],
   );
 
   return (
@@ -55,7 +54,7 @@ export default function PCPage() {
       <Modal isOpen={isAddOpen} onOpenChange={setAddOpen} isDismissable>
         <Dialog>
           <Heading slot="title">Add PC</Heading>
-          <PCForm disabled={addPC.isSubmitting} onSubmit={onSubmitAdd} />
+          <PCForm disabled={isSubmitting} onSubmit={onSubmitAdd} />
         </Dialog>
       </Modal>
 
@@ -63,7 +62,7 @@ export default function PCPage() {
         <Dialog>
           <Heading slot="title">Edit PC</Heading>
           <PCForm
-            disabled={editPC.isSubmitting}
+            disabled={isSubmitting}
             edit={editingPC}
             onSubmit={onSubmitEdit}
           />

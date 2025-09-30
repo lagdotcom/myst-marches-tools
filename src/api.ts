@@ -1,31 +1,38 @@
 import { useCallback, useState } from "react";
 import useSWR from "swr";
 
-import type { PC } from "./types";
+import type { PC, Session } from "./types";
 
 const apiRoot = "/api";
 const pcRoot = apiRoot + "/pc";
+const sessionRoot = apiRoot + "/session";
 
-interface ErrorResponse {
+export interface ErrorResponse {
   error: string;
 }
 
-interface PCListResponse {
+export interface PCListResponse {
   results: PC[];
 }
 const fetchPCList = (url: string) =>
   fetch(url).then<PCListResponse>((res) => res.json());
-
 export const usePCList = () => useSWR(pcRoot, fetchPCList);
 
-export function useAddPC() {
+export interface SessionResponse {
+  results: Session[];
+}
+const fetchSessionList = (url: string) =>
+  fetch(url).then<SessionResponse>((res) => res.json());
+export const useSessionList = () => useSWR(sessionRoot, fetchSessionList);
+
+function useEndpoint<T>(url: string) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = useCallback(
-    async (data: PC) => {
+    async (method: string, data: T) => {
       setIsSubmitting(true);
-      const result = await fetch(pcRoot, {
-        method: "POST",
+      const result = await fetch(url, {
+        method,
         body: JSON.stringify(data),
       });
       setIsSubmitting(false);
@@ -35,31 +42,14 @@ export function useAddPC() {
         return data.error;
       }
     },
-    [setIsSubmitting],
+    [setIsSubmitting, url]
   );
 
-  return { isSubmitting, submit };
+  const post = useCallback((data: T) => submit("POST", data), [submit]);
+  const put = useCallback((data: T) => submit("PUT", data), [submit]);
+
+  return { isSubmitting, post, put };
 }
 
-export function useEditPC() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const submit = useCallback(
-    async (data: PC) => {
-      setIsSubmitting(true);
-      const result = await fetch(pcRoot, {
-        method: "PUT",
-        body: JSON.stringify(data),
-      });
-      setIsSubmitting(false);
-
-      if (!result.ok) {
-        const data = (await result.json()) as ErrorResponse;
-        return data.error;
-      }
-    },
-    [setIsSubmitting],
-  );
-
-  return { isSubmitting, submit };
-}
+export const usePCAPI = () => useEndpoint<PC>(pcRoot);
+export const useSessionAPI = () => useEndpoint<Session>(sessionRoot);
