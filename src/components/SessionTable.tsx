@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import {
   Cell,
   Row,
@@ -39,12 +39,6 @@ export default function SessionTable({ onEdit }: Props) {
         .join(", "),
     [pcs],
   );
-
-  useEffect(() => console.log("pcs", pcs), [pcs]);
-  useEffect(() => console.log("data", data), [data]);
-  useEffect(() => console.log("error", error), [error]);
-  useEffect(() => console.log("isLoading", isLoading), [isLoading]);
-  useEffect(() => console.log("items", items), [items]);
 
   return (
     <Table
