@@ -19,8 +19,8 @@ export default function PCListSelect({ value, setValue }: Props) {
   const { data } = usePCList();
   const items = useMemo(
     () =>
-      data?.results
-        .map((pc) => ({ id: pc.id, name: pc.name }))
+      data
+        ?.map((pc) => ({ id: pc.id, name: pc.name }))
         .sort((a, b) => a.name.localeCompare(b.name)) ?? [],
     [data],
   );
