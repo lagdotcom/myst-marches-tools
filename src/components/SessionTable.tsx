@@ -1,3 +1,4 @@
+import type { PC, Session } from "@common/types";
 import { getLocalTimeZone, parseDate } from "@internationalized/date";
 import cx from "classnames";
 import { useMemo } from "react";
@@ -10,7 +11,6 @@ import {
 } from "react-aria-components";
 
 import { usePCList, useSessionList } from "../api";
-import type { PC, Session } from "../types";
 import useSortedList from "../useSortedList";
 import { MyButton } from "./common/MyButton";
 import { MyColumn } from "./common/MyColumn";

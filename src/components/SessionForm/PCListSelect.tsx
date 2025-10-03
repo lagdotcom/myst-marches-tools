@@ -1,3 +1,4 @@
+import type { PCID } from "@common/flavours";
 import cx from "classnames";
 import { useCallback, useMemo } from "react";
 import {
@@ -11,8 +12,8 @@ import { usePCList } from "../../api";
 import styles from "./PCListSelect.module.scss";
 
 interface Props {
-  value: string[];
-  setValue(value: string[]): void;
+  value: PCID[];
+  setValue(value: PCID[]): void;
 }
 
 export default function PCListSelect({ value, setValue }: Props) {

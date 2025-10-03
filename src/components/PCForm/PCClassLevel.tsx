@@ -1,3 +1,6 @@
+import { classNames } from "@common/data";
+import type { ClassName } from "@common/flavours";
+import type { ClassLevel } from "@common/types";
 import cx from "classnames";
 import { useCallback } from "react";
 import {
@@ -9,10 +12,8 @@ import {
   TextField,
 } from "react-aria-components";
 
-import { classNames } from "../../data";
-import type { ClassLevel } from "../../types";
 import { MyButton } from "../common/MyButton";
-import MyComboBox from "../common/MyComboBox";
+import { MyComboBox } from "../common/MyComboBox";
 import styles from "./PCClassLevel.module.scss";
 
 interface Props {
@@ -35,7 +36,7 @@ export default function PCClassLevel({
   onUpdate,
 }: Props) {
   const onNameChange = useCallback(
-    (name: string) => onUpdate({ name }),
+    (name: ClassName) => onUpdate({ name }),
     [onUpdate],
   );
 

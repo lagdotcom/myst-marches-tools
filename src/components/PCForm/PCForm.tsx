@@ -1,3 +1,5 @@
+import { speciesNames } from "@common/data";
+import type { PC } from "@common/types";
 import cx from "classnames";
 import { type FormEvent, useCallback, useState } from "react";
 import {
@@ -8,10 +10,8 @@ import {
   TextField,
 } from "react-aria-components";
 
-import { speciesNames } from "../../data";
-import type { PC } from "../../types";
 import { MyButton } from "../common/MyButton";
-import MyComboBox from "../common/MyComboBox";
+import { MyComboBox } from "../common/MyComboBox";
 import PCClassLevels from "./PCClassLevels";
 
 interface Props {

@@ -28,7 +28,7 @@ interface Props<TItem extends ComboBoxItem> {
   onChange(key: string): void;
 }
 
-export default function MyComboBox<TItem extends ComboBoxItem>({
+export function MyComboBox<TItem extends ComboBoxItem>({
   className,
   disabled,
   label,

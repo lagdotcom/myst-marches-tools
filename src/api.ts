@@ -1,7 +1,6 @@
+import type { PC, Session } from "@common/types";
 import { useCallback, useState } from "react";
 import useSWR from "swr";
-
-import type { PC, Session } from "./types";
 
 const apiRoot = "/api";
 const pcRoot = apiRoot + "/pc";

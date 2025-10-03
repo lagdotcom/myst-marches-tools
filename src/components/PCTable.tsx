@@ -1,3 +1,4 @@
+import type { PC } from "@common/types";
 import cx from "classnames";
 import { useCallback, useMemo } from "react";
 import {
@@ -10,7 +11,6 @@ import {
 
 import { usePCList, useSessionList } from "../api";
 import { CharacterResponse } from "../CharacterV5";
-import type { PC } from "../types";
 import useSortedList from "../useSortedList";
 import ClassLevelDisplay from "./ClassLevelDisplay";
 import { MyButton } from "./common/MyButton";

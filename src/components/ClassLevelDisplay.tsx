@@ -1,7 +1,7 @@
+import { classNames } from "@common/data";
+import type { ClassLevel } from "@common/types";
 import cx from "classnames";
 
-import { classNames } from "../data";
-import type { ClassLevel } from "../types";
 import styles from "./ClassLevelDisplay.module.scss";
 
 const classNameToCssClass = Object.fromEntries(

@@ -1,8 +1,8 @@
+import type { PC } from "@common/types";
 import { useCallback, useState } from "react";
 import { Dialog, Heading, Modal } from "react-aria-components";
 
 import { usePCAPI, usePCList } from "../api";
-import type { PC } from "../types";
 import { MyButton } from "./common/MyButton";
 import PCForm from "./PCForm/PCForm";
 import PCTable from "./PCTable";

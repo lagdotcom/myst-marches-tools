@@ -1,4 +1,12 @@
-export const classNames = [
+import type {
+  ClassName,
+  PCID,
+  SessionID,
+  SpeciesName,
+  WebURL,
+} from "./flavours";
+
+export const classNames: ClassName[] = [
   "Barbarian",
   "Bard",
   "Cleric",
@@ -12,8 +20,11 @@ export const classNames = [
   "Warlock",
   "Wizard",
 ];
+export function isClassName(value: string): value is ClassName {
+  return classNames.includes(value);
+}
 
-export const speciesNames = [
+export const speciesNames: SpeciesName[] = [
   "Aasimar",
   "Dragonborn (Black)",
   "Dragonborn (Blue)",
@@ -44,3 +55,12 @@ export const speciesNames = [
   "Tiefling (Chthonic)",
   "Tiefling (Infernal)",
 ];
+export function isSpeciesName(value: string): value is SpeciesName {
+  return speciesNames.includes(value);
+}
+
+const isStringFlavour = <T extends string>(value: string): value is T => true;
+
+export const isPCID = isStringFlavour<PCID>;
+export const isSessionID = isStringFlavour<SessionID>;
+export const isWebURL = isStringFlavour<WebURL>;

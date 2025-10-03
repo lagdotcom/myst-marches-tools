@@ -1,3 +1,4 @@
+import type { Session } from "@common/types";
 import { parseDate } from "@internationalized/date";
 import cx from "classnames";
 import { type FormEvent, useCallback, useState } from "react";
@@ -19,7 +20,6 @@ import {
   TextField,
 } from "react-aria-components";
 
-import type { Session } from "../../types";
 import { MyButton } from "../common/MyButton";
 import PCListSelect from "./PCListSelect";
 

@@ -1,6 +1,6 @@
+import type { ClassLevel } from "@common/types";
 import { type Dispatch, type SetStateAction, useCallback } from "react";
 
-import type { ClassLevel } from "../../types";
 import { MyButton } from "../common/MyButton";
 import PCClassLevel from "./PCClassLevel";
 import styles from "./PCClassLevels.module.scss";

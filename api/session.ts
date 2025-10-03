@@ -1,46 +1,25 @@
-import { createClient } from "redis";
 import { v4 } from "uuid";
-import * as z from "zod";
 
-const getRedis = () => createClient({ url: process.env.REDIS_URL }).connect();
-
-const prefix = "session:";
-const glob = prefix + "*";
-
-const Session = z.object({
-  id: z.string().startsWith("session:"),
-  name: z.string(),
-  date: z.string().date(),
-  dm: z.string(),
-  pcs: z.array(z.string()),
-});
-
-function formatZodError<T>(error: z.ZodError<T>) {
-  const flat = error.flatten();
-  const errors = flat.formErrors;
-
-  for (const v of Object.values(flat.fieldErrors))
-    if (v) errors.push(...(v as string[]));
-
-  return errors.join("\n");
-}
+import { SessionID } from "../common/flavours.js";
+import { formatZodError, sessionPrefix, zSession } from "../common/types.js";
+import { getRedis } from "./_services.js";
 
 export const GET = async () => {
   const redis = await getRedis();
 
-  const keys = await redis.keys(glob);
+  const keys = (await redis.keys(sessionPrefix + "*")) as SessionID[];
   const results = keys.length ? await redis.json.mGet(keys, ".") : [];
 
   return new Response(JSON.stringify(results));
 };
 
 export const POST = async (request: Request) => {
-  const { error, data: session } = Session.safeParse(await request.json());
+  const { error, data: session } = zSession.safeParse(await request.json());
   if (error)
     return new Response(JSON.stringify({ error: formatZodError(error) }), {
       status: 400,
     });
-  const key = prefix + v4();
+  const key: SessionID = sessionPrefix + v4();
   session.id = key;
 
   const redis = await getRedis();
@@ -55,7 +34,7 @@ export const POST = async (request: Request) => {
 };
 
 export const PUT = async (request: Request) => {
-  const { error, data: session } = Session.safeParse(await request.json());
+  const { error, data: session } = zSession.safeParse(await request.json());
   if (error)
     return new Response(JSON.stringify({ error: formatZodError(error) }), {
       status: 400,

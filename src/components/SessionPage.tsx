@@ -1,8 +1,8 @@
+import type { Session } from "@common/types";
 import { useCallback, useState } from "react";
 import { Dialog, Heading, Modal } from "react-aria-components";
 
 import { useSessionAPI, useSessionList } from "../api";
-import type { Session } from "../types";
 import { MyButton } from "./common/MyButton";
 import SessionForm from "./SessionForm/SessionForm";
 import SessionTable from "./SessionTable";
