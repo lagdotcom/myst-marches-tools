@@ -59,7 +59,8 @@ export function isSpeciesName(value: string): value is SpeciesName {
   return speciesNames.includes(value);
 }
 
-const isStringFlavour = <T extends string>(value: string): value is T => true;
+const isStringFlavour = <T extends string>(value: string): value is T =>
+  typeof value === "string";
 
 export const isPCID = isStringFlavour<PCID>;
 export const isSessionID = isStringFlavour<SessionID>;
