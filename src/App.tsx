@@ -1,31 +1,27 @@
 import { Analytics } from "@vercel/analytics/react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { SWRConfig } from "swr";
+import { type ComponentType, useState } from "react";
 
 import MainNav from "./components/MainNav";
 import PCPage from "./components/PCPage";
 import SessionPage from "./components/SessionPage";
+import type { AppPage } from "./routes";
+
+const pages: Record<AppPage, ComponentType> = {
+  pc: PCPage,
+  session: SessionPage,
+};
 
 export default function App() {
+  const [page, setPage] = useState<AppPage>("pc");
+  const Page = pages[page];
+
   return (
-    <SWRConfig
-      value={{
-        revalidateOnFocus: true,
-        revalidateOnReconnect: true,
-        shouldRetryOnError: true,
-      }}
-    >
-      <BrowserRouter>
-        <Analytics />
-        <MainNav />
-        <main>
-          <Routes>
-            <Route path="/pc" element={<PCPage />} />
-            <Route path="/session" element={<SessionPage />} />
-            <Route path="*" element={<Navigate to="/pc" replace />} />
-          </Routes>
-        </main>
-      </BrowserRouter>
-    </SWRConfig>
+    <>
+      <Analytics />
+      <MainNav page={page} navigate={setPage} />
+      <main>
+        <Page />
+      </main>
+    </>
   );
 }

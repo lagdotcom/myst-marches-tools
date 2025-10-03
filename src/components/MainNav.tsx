@@ -1,10 +1,24 @@
-import { NavButton } from "./common/NavButton";
+import { ToggleButton } from "react-aria-components";
 
-export default function MainNav() {
+import type { AppPage } from "../routes";
+
+interface Props {
+  page: AppPage;
+  navigate(page: AppPage): void;
+}
+
+export default function MainNav({ page, navigate }: Props) {
   return (
     <nav>
-      <NavButton label="PCs" url="/pc" />
-      <NavButton label="Sessions" url="/session" />
+      <ToggleButton isSelected={page === "pc"} onChange={() => navigate("pc")}>
+        PCs
+      </ToggleButton>
+      <ToggleButton
+        isSelected={page === "session"}
+        onChange={() => navigate("session")}
+      >
+        Sessions
+      </ToggleButton>
     </nav>
   );
 }
